@@ -1,18 +1,22 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Container, Tab } from 'semantic-ui-react'
+import { Container, Tab, Segment, Header, Icon } from 'semantic-ui-react'
 
-import { sortItems, filterItemsByCategory } from '../selectors/items'
 import {
-  setTextFilter,
+  selectItems,
+  sortItems,
+  filterItemsByCategory
+} from '../selectors/items'
+import {
   setWeaponSort,
   setWarframeSort,
   setCompanionSort,
   setVehicleSort
 } from '../actions/filters'
-import Header from './Header'
+import AppHeader from './AppHeader'
 import ItemTable from './ItemTable'
 import TabLoader from './TabLoader'
+import ItemTableFilters from './ItemTableFilters'
 
 class Dashboard extends React.Component {
   state = {
@@ -45,7 +49,7 @@ class Dashboard extends React.Component {
     } 
   }
   render() {
-    const { items, filters } = this.props
+    const { items, visibleItems, filters } = this.props
     const weaponSort = filters.weaponSort
     const warframeSort = filters.warframeSort
     const companionSort = filters.companionSort
@@ -53,60 +57,96 @@ class Dashboard extends React.Component {
 
     const panes = [
       { menuItem: 'Weapons', render: () => (
-        <Tab.Pane>
-          {items.length > 0 ? (
-            <ItemTable
-              category={'Weapons'}
-              sortBy={weaponSort}
-              handleSortChange={this.handleSortChange}
-              items={sortItems(filterItemsByCategory(items, 'Weapon'), weaponSort)}
-            />
-          ) : (
+        <Tab.Pane className="item">
+          {items.length === 0 ? (
             <TabLoader />
+          ) : (
+            visibleItems.length > 0 ? (
+              <ItemTable
+                category={'Weapons'}
+                sortBy={weaponSort}
+                handleSortChange={this.handleSortChange}
+                items={sortItems(filterItemsByCategory(visibleItems, 'Weapon'), weaponSort)}
+              />
+            ) : (
+              <Segment placeholder>
+                <Header size="medium" color="grey" icon>
+                  <Icon name="search" />
+                  No Weapons Found
+                </Header>
+              </Segment>
+            )
           )}
         </Tab.Pane>
       )},
       { menuItem: 'Warframes', render: () => (
         <Tab.Pane>
-          {items.length > 0 ? (
-            <ItemTable
-              category={'Warframes'}
-              sortBy={warframeSort}
-              handleSortChange={this.handleSortChange}
-              items={sortItems(filterItemsByCategory(items, 'Warframe'), warframeSort)}
-              excludeCols={['slot', 'type']}
-            />
-          ) : (
+          {items.length === 0 ? (
             <TabLoader />
+          ) : (
+            filterItemsByCategory(visibleItems, 'Warframe').length > 0 ? (
+              <ItemTable
+                category={'Warframes'}
+                sortBy={warframeSort}
+                handleSortChange={this.handleSortChange}
+                items={sortItems(filterItemsByCategory(visibleItems, 'Warframe'), warframeSort)}
+                excludeCols={['slot', 'type']}
+              />
+            ) : (
+              <Segment placeholder>
+                <Header size="medium" color="grey" icon>
+                  <Icon name="search" />
+                  No Warframes Found
+                </Header>
+              </Segment>
+            )
           )}
         </Tab.Pane>
       )},
       { menuItem: 'Companions', render: () => (
         <Tab.Pane>
-          {items.length > 0 ? (
-            <ItemTable
-              category={'Companions'}
-              sortBy={companionSort}
-              handleSortChange={this.handleSortChange}
-              items={sortItems(filterItemsByCategory(items, 'Companion'), companionSort)}
-            />
-          ) : (
+          {items.length === 0 ? (
             <TabLoader />
+          ) : (
+            filterItemsByCategory(visibleItems, 'Companion').length > 0 ? (
+              <ItemTable
+                category={'Companions'}
+                sortBy={companionSort}
+                handleSortChange={this.handleSortChange}
+                items={sortItems(filterItemsByCategory(visibleItems, 'Companion'), companionSort)}
+              />
+            ) : (
+              <Segment placeholder>
+                <Header size="medium" color="grey" icon>
+                  <Icon name="search" />
+                  No Companions Found
+                </Header>
+              </Segment>
+            )
           )}
         </Tab.Pane>
       )},
       { menuItem: 'Vehicles', render: () => (
         <Tab.Pane>
-          {items.length > 0 ? (
-            <ItemTable
-              category={'Vehicles'}
-              sortBy={vehicleSort}
-              handleSortChange={this.handleSortChange}
-              items={sortItems(filterItemsByCategory(items, 'Vehicle'), vehicleSort)}
-              excludeCols={['type']}
-            />
-          ) : (
+          {items.length === 0 ? (
             <TabLoader />
+          ) : (
+            filterItemsByCategory(visibleItems, 'Vehicle').length > 0 ? (
+              <ItemTable
+                category={'Vehicles'}
+                sortBy={vehicleSort}
+                handleSortChange={this.handleSortChange}
+                items={sortItems(filterItemsByCategory(visibleItems, 'Vehicle'), vehicleSort)}
+                excludeCols={['type']}
+              />
+            ) : (
+              <Segment placeholder>
+                <Header size="medium" color="grey" icon>
+                  <Icon name="search" />
+                  No Vehicles Found
+                </Header>
+              </Segment>
+            )
           )}
         </Tab.Pane>
       )},
@@ -116,7 +156,8 @@ class Dashboard extends React.Component {
     return (
       <>
         <Container style={{ marginTop: 40, marginBottom: 40 }}>
-          <Header />
+          <AppHeader />
+          <ItemTableFilters />
           <Tab panes={panes} />
         </Container>
       </>
@@ -126,15 +167,13 @@ class Dashboard extends React.Component {
 
 const mapStateToProps = state => ({
   items: state.items,
+  visibleItems: selectItems(state.items, state.filters, state.user),
   filters: state.filters
 })
 
-const mapDispatchToProps = dispatch => ({
-  setTextFilter: (text) => dispatch(setTextFilter(text)),
-  setWeaponSort: (sort) => dispatch(setWeaponSort(sort)),
-  setWarframeSort: (sort) => dispatch(setWarframeSort(sort)),
-  setCompanionSort: (sort) => dispatch(setCompanionSort(sort)),
-  setVehicleSort: (sort) => dispatch(setVehicleSort(sort))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default connect(mapStateToProps, {
+  setWeaponSort,
+  setWarframeSort,
+  setCompanionSort,
+  setVehicleSort
+})(Dashboard)

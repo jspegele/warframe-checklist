@@ -2,6 +2,9 @@ import * as actionTypes from '../actions/types'
 
 const filtersReducerDefaultState = {
   text: '',
+  maxMR: null,
+  hideOwned: false,
+  hideMastered: false,
   weaponSort: 'nameAsc',
   warframeSort: 'nameAsc',
   companionSort: 'nameAsc',
@@ -15,6 +18,21 @@ const filtersReducer = (state = filtersReducerDefaultState, action) => {
       return {
         ...state,
         text: action.payload.text
+      }
+    case actionTypes.SET_MAX_MR:
+      return {
+        ...state,
+        maxMR: action.payload.mr
+      }
+    case actionTypes.SET_HIDE_OWNED:
+      return {
+        ...state,
+        hideOwned: action.payload.hide
+      }
+    case actionTypes.SET_HIDE_MASTERED:
+      return {
+        ...state,
+        hideMastered: action.payload.hide
       }
     case actionTypes.SET_WEAPON_SORT:
       return {

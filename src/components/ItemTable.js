@@ -3,23 +3,13 @@ import { connect } from 'react-redux'
 import { Table, Icon } from 'semantic-ui-react'
 
 import { localStorageId } from '../index'
-import {
-  setTextFilter,
-  setWeaponSort,
-  setWarframeSort,
-  setCompanionSort,
-  setVehicleSort
-} from '../actions/filters'
+import { setUserOwned, setUserMastered } from '../actions/user'
 import ItemTableItem from './ItemTableItem'
 
 class ItemTable extends React.Component {
   state = {
-    owned: localStorage.getItem(localStorageId) ? (
-      JSON.parse(localStorage.getItem(localStorageId)).owned
-    ) : [],
-    mastered: localStorage.getItem(localStorageId) ? (
-      JSON.parse(localStorage.getItem(localStorageId)).mastered
-    ) : [],
+    owned: this.props.user.owned,
+    mastered: this.props.user.mastered,
     sortBy: 'name',
     sort: 'Asc'
   }
@@ -34,7 +24,9 @@ class ItemTable extends React.Component {
       this.props.handleSortChange(this.props.category, sortBy, sort)
     })
   }
-  updateLocalStorage = () => {
+  saveUserData = () => {
+    this.props.setUserOwned(this.state.owned)
+    this.props.setUserMastered(this.state.mastered)
     localStorage.setItem(localStorageId, JSON.stringify({
       owned: this.state.owned,
       mastered: this.state.mastered
@@ -43,7 +35,7 @@ class ItemTable extends React.Component {
   handleAddOwned = id => {
     const owned = this.state.owned.concat(id)
     this.setState({ owned }, () => {
-      this.updateLocalStorage()
+      this.saveUserData()
     })
   }
   handleRemoveOwned = id => {
@@ -51,13 +43,13 @@ class ItemTable extends React.Component {
       .slice(0, this.state.owned.indexOf(id))
       .concat(this.state.owned.slice(this.state.owned.indexOf(id) + 1))
     this.setState({ owned }, () => {
-      this.updateLocalStorage()
+      this.saveUserData()
     })
   }
   handleAddMastered = id => {
     const mastered = this.state.mastered.concat(id)
     this.setState({ mastered }, () => {
-      this.updateLocalStorage()
+      this.saveUserData()
     })
   }
   handleRemoveMastered = id => {
@@ -65,7 +57,7 @@ class ItemTable extends React.Component {
       .slice(0, this.state.mastered.indexOf(id))
       .concat(this.state.mastered.slice(this.state.mastered.indexOf(id) + 1))
     this.setState({ mastered }, () => {
-      this.updateLocalStorage()
+      this.saveUserData()
     })
   }
   render() {
@@ -165,15 +157,8 @@ class ItemTable extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  filters: state.filters
+  filters: state.filters,
+  user: state.user
 })
 
-const mapDispatchToProps = dispatch => ({
-  setTextFilter: (text) => dispatch(setTextFilter(text)),
-  setWeaponSort: (sort) => dispatch(setWeaponSort(sort)),
-  setWarframeSort: (sort) => dispatch(setWarframeSort(sort)),
-  setCompanionSort: (sort) => dispatch(setCompanionSort(sort)),
-  setVehicleSort: (sort) => dispatch(setVehicleSort(sort))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ItemTable)
+export default connect(mapStateToProps, { setUserOwned, setUserMastered })(ItemTable)

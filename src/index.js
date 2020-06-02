@@ -8,6 +8,7 @@ import 'semantic-ui-css/semantic.min.css'
 import database from './firebase/firebase'
 import configureStore from './store/configureStore'
 import { setItems } from './actions/items'
+import { setUserOwned, setUserMastered } from './actions/user'
 import Dashboard from './components/Dashboard'
 
 // POPULATE DATABASE
@@ -15,8 +16,10 @@ import Dashboard from './components/Dashboard'
 // const itemsRef = database.ref('items')
 // itemsData.forEach(item => itemsRef.push(item))
 
+// configure redux store
 const store = configureStore()
 
+// get items from firebase and send to store
 const items = []
 database.ref('items').once('value').then(snap => {
   snap.forEach(item => {
@@ -29,7 +32,13 @@ database.ref('items').once('value').then(snap => {
   store.dispatch(setItems(items))
 })
 
+// get user saved info and send to store
 export const localStorageId = 'wfCheclist-85c28a91-2d06-4407-b9d1-722864f5b9e8'
+const storedData = localStorage.getItem(localStorageId)
+if (storedData) {
+  store.dispatch(setUserOwned(JSON.parse(localStorage.getItem(localStorageId)).owned))
+  store.dispatch(setUserMastered(JSON.parse(localStorage.getItem(localStorageId)).mastered))
+}
 
 ReactDOM.render(
   <Provider store={store}>

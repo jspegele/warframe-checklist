@@ -1,3 +1,18 @@
+export const selectItems = (items, { text, maxMR, hideOwned, hideMastered }, { owned, mastered}) => {
+  return items.filter(item => {
+    const textMatch = item.name && (
+      item.name.toLowerCase().includes(text.toLowerCase()) ||
+      item.slot.toLowerCase().includes(text.toLowerCase()) ||
+      item.type.toLowerCase().includes(text.toLowerCase()) ||
+      item.source.toLowerCase().includes(text.toLowerCase())
+    )
+    const mrMatch = maxMR ? (parseInt(item.mr) <= parseInt(maxMR)) : true
+    const ownedMatch = hideOwned ? !owned.includes(item.id) : true
+    const masteredMatch = hideMastered ? !mastered.includes(item.id) : true
+    return textMatch && mrMatch && ownedMatch && masteredMatch
+  })
+}
+
 export const sortItems = (items, sortBy) => {
   return items.sort((a, b) => {
     if(sortBy === 'categoryAsc') {

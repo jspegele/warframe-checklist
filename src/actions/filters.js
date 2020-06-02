@@ -1,9 +1,30 @@
 import * as actionTypes from './types'
 
 export const setTextFilter  = (text = '') => ({
-  type: 'SET_TEXT_FILTER',
+  type: actionTypes.SET_TEXT_FILTER,
   payload: {
     text
+  }
+})
+
+export const setMaxMR = (mr = null) => ({
+  type: actionTypes.SET_MAX_MR,
+  payload: {
+    mr
+  }
+})
+
+export const setHideOwned = (hide) => ({
+  type: actionTypes.SET_HIDE_OWNED,
+  payload: {
+    hide
+  }
+})
+
+export const setHideMastered = (hide) => ({
+  type: actionTypes.SET_HIDE_MASTERED,
+  payload: {
+    hide
   }
 })
 
