@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Table, Icon } from 'semantic-ui-react'
 
-import { localStorageId } from '../index'
+import { saveDataToLocalStorage } from '../localStorage/localStorage'
 import { setUserOwned, setUserMastered } from '../actions/user'
 import ItemTableItem from './ItemTableItem'
 
@@ -23,14 +23,6 @@ class ItemTable extends React.Component {
     this.setState({ sortBy, sort }, () => {
       this.props.handleSortChange(this.props.category, sortBy, sort)
     })
-  }
-  saveUserData = () => {
-    this.props.setUserOwned(this.state.owned)
-    this.props.setUserMastered(this.state.mastered)
-    localStorage.setItem(localStorageId, JSON.stringify({
-      owned: this.state.owned,
-      mastered: this.state.mastered
-    }))
   }
   handleAddOwned = id => {
     const owned = this.state.owned.concat(id)
@@ -58,6 +50,18 @@ class ItemTable extends React.Component {
       .concat(this.state.mastered.slice(this.state.mastered.indexOf(id) + 1))
     this.setState({ mastered }, () => {
       this.saveUserData()
+    })
+  }
+  saveUserData = () => {
+    this.props.setUserOwned(this.state.owned)
+    this.props.setUserMastered(this.state.mastered)
+    saveDataToLocalStorage({
+      owned: this.state.owned,
+      mastered: this.state.mastered,
+      user: {
+        hideOwned: this.props.filters.hideOwned,
+        hideMastered: this.props.filters.hideMastered
+      }
     })
   }
   render() {

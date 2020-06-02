@@ -6,8 +6,10 @@ import './index.css'
 import 'semantic-ui-css/semantic.min.css'
 
 import database from './firebase/firebase'
+import { getDataFromLocalStorage } from './localStorage/localStorage'
 import configureStore from './store/configureStore'
 import { setItems } from './actions/items'
+import { setHideOwned, setHideMastered } from './actions/filters'
 import { setUserOwned, setUserMastered } from './actions/user'
 import Dashboard from './components/Dashboard'
 
@@ -33,11 +35,13 @@ database.ref('items').once('value').then(snap => {
 })
 
 // get user saved info and send to store
-export const localStorageId = 'wfCheclist-85c28a91-2d06-4407-b9d1-722864f5b9e8'
-const storedData = localStorage.getItem(localStorageId)
-if (storedData) {
-  store.dispatch(setUserOwned(JSON.parse(localStorage.getItem(localStorageId)).owned))
-  store.dispatch(setUserMastered(JSON.parse(localStorage.getItem(localStorageId)).mastered))
+const json = getDataFromLocalStorage()
+if (json) {
+  const storedData = JSON.parse(json)
+  store.dispatch(setUserOwned(storedData.owned))
+  store.dispatch(setUserMastered(storedData.mastered))
+  store.dispatch(setHideOwned(storedData.user.hideOwned))
+  store.dispatch(setHideMastered(storedData.user.hideMastered))
 }
 
 ReactDOM.render(

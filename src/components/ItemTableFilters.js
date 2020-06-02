@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Segment, Grid, Input, Dropdown, Checkbox } from 'semantic-ui-react'
 
+import { saveDataToLocalStorage } from '../localStorage/localStorage'
 import {
   setTextFilter,
   setMaxMR,
@@ -27,11 +28,23 @@ class ItemTableFilters extends React.Component {
   handleHideOwnedChange = () => {
     this.setState({ hideOwned: !this.state.hideOwned }, () => {
       this.props.setHideOwned(this.state.hideOwned)
+      this.saveUserData()
     })
   }
   handleHideMasteredChange = () => {
     this.setState({ hideMastered: !this.state.hideMastered }, () => {
       this.props.setHideMastered(this.state.hideMastered)
+      this.saveUserData()
+    })
+  }
+  saveUserData = () => {
+    saveDataToLocalStorage({
+      owned: this.props.user.owned,
+      mastered: this.props.user.mastered,
+      user: {
+        hideOwned: this.state.hideOwned,
+        hideMastered: this.state.hideMastered
+      }
     })
   }
   render() {
@@ -79,12 +92,14 @@ class ItemTableFilters extends React.Component {
           <Grid.Column width="2" verticalAlign="middle">
             <Checkbox
               label="Hide Owned"
+              checked={this.props.filters.hideOwned}
               onChange={this.handleHideOwnedChange}
             />
           </Grid.Column>
           <Grid.Column width="3" verticalAlign="middle">
             <Checkbox
               label="Hide Mastered"
+              checked={this.props.filters.hideMastered}
               onChange={this.handleHideMasteredChange}
             />
           </Grid.Column>
@@ -95,7 +110,8 @@ class ItemTableFilters extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  filters: state.filters
+  filters: state.filters,
+  user: state.user
 })
 
 export default connect(mapStateToProps, {
