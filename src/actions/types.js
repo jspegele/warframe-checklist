@@ -1,0 +1,25 @@
+// Items types
+export const SET_ITEMS = 'SET_ITEMS'
+
+// Filter types
+export const SET_TEXT_FILTER = 'SET_TEXT_FILTER'
+
+export const SET_WEAPON_SORT = 'SET_WEAPON_SORT'
+export const SET_WARFRAME_SORT = 'SET_WARFRAME_SORT'
+export const SET_COMPANION_SORT = 'SET_COMPANION_SORT'
+export const SET_VEHICLE_SORT = 'SET_VEHICLE_SORT'
+
+
+
+export const SORT_BY_CATEGORY_ASC = 'SORT_BY_CATEGORY_ASC'
+export const SORT_BY_CATEGORY_DESC = ''
+export const SORT_BY_SLOT_ASC = 'SORT_BY_SLOT_ASC'
+export const SORT_BY_SLOT_DESC = 'SORT_BY_SLOT_DESC'
+export const SORT_BY_NAME_ASC = 'SORT_BY_NAME_ASC'
+export const SORT_BY_NAME_DESC = 'SORT_BY_NAME_DESC'
+export const SORT_BY_TYPE_ASC = 'SORT_BY_TYPE_ASC'
+export const SORT_BY_TYPE_DESC = 'SORT_BY_TYPE_DESC'
+export const SORT_BY_MR_ASC = 'SORT_BY_MR_ASC'
+export const SORT_BY_MR_DESC = 'SORT_BY_MR_DESC'
+export const SORT_BY_SOURCE_ASC = 'SORT_BY_SOURCE_ASC'
+export const SORT_BY_SOURCE_DESC = 'SORT_BY_SOURCE_DESC'

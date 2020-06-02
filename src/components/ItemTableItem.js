@@ -1,0 +1,43 @@
+import React from 'react'
+import { Table, Checkbox } from 'semantic-ui-react'
+
+class ItemTableItem extends React.Component {
+  state = {
+    owned: this.props.owned,
+    mastered: this.props.mastered
+  }
+  onOwnedChange = () => {
+    this.setState({ owned: !this.state.owned }, () => {
+      if (this.state.owned) {
+        this.props.handleAddOwned(this.props.item.id)
+      } else {
+        this.props.handleRemoveOwned(this.props.item.id)
+      }
+    })
+  }
+  onMasteredChange = () => {
+    this.setState({ mastered: !this.state.mastered }, () => {
+      if (this.state.mastered) {
+        this.props.handleAddMastered(this.props.item.id)
+      } else {
+        this.props.handleRemoveMastered(this.props.item.id)
+      }
+    })
+  }
+  render() {
+    const { excludeCols, item } = this.props
+    return (
+      <Table.Row>
+        {!excludeCols.includes('slot') && <Table.Cell>{item.slot}</Table.Cell>}
+        <Table.Cell>{item.name}</Table.Cell>
+        {!excludeCols.includes('type') && <Table.Cell>{item.type}</Table.Cell>}
+        <Table.Cell textAlign="right" style={{ paddingRight: 30 }}>{item.mr}</Table.Cell>
+        <Table.Cell>{item.source}</Table.Cell>
+        <Table.Cell textAlign="center"><Checkbox onChange={this.onOwnedChange} checked={this.state.owned} /></Table.Cell>
+        <Table.Cell textAlign="center"><Checkbox onChange={this.onMasteredChange} checked={this.state.mastered} /></Table.Cell>
+      </Table.Row>
+    )
+  }
+}
+
+export default ItemTableItem
