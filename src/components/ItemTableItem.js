@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Checkbox } from 'semantic-ui-react'
+import { Table, Checkbox, Responsive } from 'semantic-ui-react'
 
 class ItemTableItem extends React.Component {
   state = {
@@ -30,9 +30,9 @@ class ItemTableItem extends React.Component {
       <Table.Row>
         {!excludeCols.includes('slot') && <Table.Cell>{item.slot}</Table.Cell>}
         <Table.Cell>{item.name}</Table.Cell>
-        {!excludeCols.includes('type') && <Table.Cell>{item.type}</Table.Cell>}
+        {!excludeCols.includes('type') && <Responsive as={Table.Cell} minWidth={996}>{item.type}</Responsive>}
         <Table.Cell textAlign="right" style={{ paddingRight: 30 }}>{item.mr}</Table.Cell>
-        <Table.Cell>{item.source}</Table.Cell>
+        <Table.Cell className="item-table__source">{item.source}</Table.Cell>
         <Table.Cell textAlign="center"><Checkbox onChange={this.onOwnedChange} checked={this.state.owned} /></Table.Cell>
         <Table.Cell textAlign="center"><Checkbox onChange={this.onMasteredChange} checked={this.state.mastered} /></Table.Cell>
       </Table.Row>

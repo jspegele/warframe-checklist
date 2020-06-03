@@ -14,9 +14,10 @@ import {
   setVehicleSort
 } from '../actions/filters'
 import AppHeader from './AppHeader'
+import UserOverview from './UserOverview'
+import ItemTableFilters from './ItemTableFilters'
 import ItemTable from './ItemTable'
 import TabLoader from './TabLoader'
-import ItemTableFilters from './ItemTableFilters'
 
 class Dashboard extends React.Component {
   state = {
@@ -66,7 +67,7 @@ class Dashboard extends React.Component {
                 category={'Weapons'}
                 sortBy={weaponSort}
                 handleSortChange={this.handleSortChange}
-                items={sortItems(filterItemsByCategory(visibleItems, 'Weapon'), weaponSort)}
+                visibleItems={sortItems(filterItemsByCategory(visibleItems, 'Weapon'), weaponSort)}
               />
             ) : (
               <Segment placeholder>
@@ -89,7 +90,7 @@ class Dashboard extends React.Component {
                 category={'Warframes'}
                 sortBy={warframeSort}
                 handleSortChange={this.handleSortChange}
-                items={sortItems(filterItemsByCategory(visibleItems, 'Warframe'), warframeSort)}
+                visibleItems={sortItems(filterItemsByCategory(visibleItems, 'Warframe'), warframeSort)}
                 excludeCols={['slot', 'type']}
               />
             ) : (
@@ -113,7 +114,7 @@ class Dashboard extends React.Component {
                 category={'Companions'}
                 sortBy={companionSort}
                 handleSortChange={this.handleSortChange}
-                items={sortItems(filterItemsByCategory(visibleItems, 'Companion'), companionSort)}
+                visibleItems={sortItems(filterItemsByCategory(visibleItems, 'Companion'), companionSort)}
               />
             ) : (
               <Segment placeholder>
@@ -136,7 +137,7 @@ class Dashboard extends React.Component {
                 category={'Vehicles'}
                 sortBy={vehicleSort}
                 handleSortChange={this.handleSortChange}
-                items={sortItems(filterItemsByCategory(visibleItems, 'Vehicle'), vehicleSort)}
+                visibleItems={sortItems(filterItemsByCategory(visibleItems, 'Vehicle'), vehicleSort)}
                 excludeCols={['type']}
               />
             ) : (
@@ -150,13 +151,14 @@ class Dashboard extends React.Component {
           )}
         </Tab.Pane>
       )},
-      { menuItem: 'Other', render: () => <Tab.Pane>other mastery stuff</Tab.Pane> }
+      { menuItem: 'Other', render: () => <Tab.Pane style={{ padding: 40 }}>Ability to add Star Chart and Railjack Mastery coming soon.</Tab.Pane> }
     ]
 
     return (
       <>
         <Container style={{ marginTop: 40, marginBottom: 40 }}>
           <AppHeader />
+          <UserOverview />
           <ItemTableFilters />
           <Tab panes={panes} />
         </Container>

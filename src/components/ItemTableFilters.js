@@ -39,9 +39,10 @@ class ItemTableFilters extends React.Component {
   }
   saveUserData = () => {
     saveDataToLocalStorage({
+      mastery: this.props.user.mastery,
       owned: this.props.user.owned,
       mastered: this.props.user.mastered,
-      user: {
+      preferences: {
         hideOwned: this.state.hideOwned,
         hideMastered: this.state.hideMastered
       }
@@ -68,7 +69,7 @@ class ItemTableFilters extends React.Component {
     return (
       <Segment>
         <Grid stackable>
-          <Grid.Column width="9">
+          <Grid.Column width="10">
             <Input
               placeholder="Filter by slot, name, type, source"
               autoComplete="off"
@@ -78,7 +79,7 @@ class ItemTableFilters extends React.Component {
               onChange={this.handleTextChange}
             />
           </Grid.Column>
-          <Grid.Column width="2">
+          <Grid.Column width="3">
             <Dropdown
               placeholder="Max MR"
               fluid
@@ -89,14 +90,12 @@ class ItemTableFilters extends React.Component {
               onChange={this.handleMaxMRChange}
             />
           </Grid.Column>
-          <Grid.Column width="2" verticalAlign="middle">
+          <Grid.Column width="3" verticalAlign="middle">
             <Checkbox
               label="Hide Owned"
               checked={this.props.filters.hideOwned}
               onChange={this.handleHideOwnedChange}
             />
-          </Grid.Column>
-          <Grid.Column width="3" verticalAlign="middle">
             <Checkbox
               label="Hide Mastered"
               checked={this.props.filters.hideMastered}

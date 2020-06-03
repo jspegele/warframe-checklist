@@ -1,0 +1,15 @@
+.sortable {
+  cursor: pointer !important;
+}
+.sortable:hover {
+  background: #e0e0e0 !important;
+}
+
+.item-table__source {
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.checkbox--inverted label {
+  color: #fff !important;
+}

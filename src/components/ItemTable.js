@@ -1,15 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Table, Icon } from 'semantic-ui-react'
+import { Table, Icon, Responsive } from 'semantic-ui-react'
 
 import { saveDataToLocalStorage } from '../localStorage/localStorage'
-import { setUserOwned, setUserMastered } from '../actions/user'
+import { setUserMastery, setUserOwned, setUserMastered } from '../actions/user'
 import ItemTableItem from './ItemTableItem'
 
 class ItemTable extends React.Component {
   state = {
     owned: this.props.user.owned,
     mastered: this.props.user.mastered,
+    mastery: this.props.user.mastery,
     sortBy: 'name',
     sort: 'Asc'
   }
@@ -39,17 +40,33 @@ class ItemTable extends React.Component {
     })
   }
   handleAddMastered = id => {
+    this.handleAddMastery(id)
     const mastered = this.state.mastered.concat(id)
     this.setState({ mastered }, () => {
       this.saveUserData()
     })
   }
+  handleAddMastery = id => {
+    const masteryToAdd = parseInt(this.props.items.find(item => item.id === id).mastery)
+    const mastery = this.state.mastery + masteryToAdd
+    this.setState({ mastery }, () => {
+      this.props.setUserMastery(mastery)
+    })
+  }
   handleRemoveMastered = id => {
+    this.handleSubtractMastery(id)
     const mastered = this.state.mastered
       .slice(0, this.state.mastered.indexOf(id))
       .concat(this.state.mastered.slice(this.state.mastered.indexOf(id) + 1))
     this.setState({ mastered }, () => {
       this.saveUserData()
+    })
+  }
+  handleSubtractMastery = id => {
+    const masteryToSubtract = parseInt(this.props.items.find(item => item.id === id).mastery)
+    const mastery = this.state.mastery - masteryToSubtract
+    this.setState({ mastery }, () => {
+      this.props.setUserMastery(mastery)
     })
   }
   saveUserData = () => {
@@ -65,7 +82,7 @@ class ItemTable extends React.Component {
     })
   }
   render() {
-    const { items = [], sortBy = 'nameAsc', excludeCols = [] } = this.props
+    const { visibleItems = [], sortBy = 'nameAsc', excludeCols = [] } = this.props
     return (
       <Table singleLine>
         <Table.Header>
@@ -97,18 +114,18 @@ class ItemTable extends React.Component {
                 )}
             </Table.HeaderCell>
             {!excludeCols.includes('type') && (
-              <Table.HeaderCell className="sortable" onClick={() => this.onSortChange('type')}>
-                Type
-                {sortBy === 'typeAsc' ? (
-                    <Icon name='caret up' />
+              <Responsive as={Table.HeaderCell} minWidth={996} className="sortable" onClick={() => this.onSortChange('type')}>
+              Type
+              {sortBy === 'typeAsc' ? (
+                  <Icon name='caret up' />
+                ) : (
+                  sortBy === 'typeDesc' ? (
+                    <Icon name='caret down' />
                   ) : (
-                    sortBy === 'typeDesc' ? (
-                      <Icon name='caret down' />
-                    ) : (
-                      <Icon />
-                    )
-                  )}
-              </Table.HeaderCell>
+                    <Icon />
+                  )
+                )}
+              </Responsive>
             )}
             <Table.HeaderCell className="sortable" onClick={() => this.onSortChange('mr')} textAlign="right">
               MR
@@ -140,7 +157,7 @@ class ItemTable extends React.Component {
         </Table.Header>
         <Table.Body>
           {
-            items.map(item => (
+            visibleItems.map(item => (
               <ItemTableItem
                 key={item.id}
                 excludeCols={excludeCols}
@@ -161,8 +178,13 @@ class ItemTable extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  items: state.items,
   filters: state.filters,
   user: state.user
 })
 
-export default connect(mapStateToProps, { setUserOwned, setUserMastered })(ItemTable)
+export default connect(mapStateToProps, {
+  setUserMastery,
+  setUserOwned,
+  setUserMastered
+})(ItemTable)

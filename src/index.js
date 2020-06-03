@@ -10,7 +10,7 @@ import { getDataFromLocalStorage } from './localStorage/localStorage'
 import configureStore from './store/configureStore'
 import { setItems } from './actions/items'
 import { setHideOwned, setHideMastered } from './actions/filters'
-import { setUserOwned, setUserMastered } from './actions/user'
+import { setUserMastery, setUserOwned, setUserMastered } from './actions/user'
 import Dashboard from './components/Dashboard'
 
 // POPULATE DATABASE
@@ -38,10 +38,13 @@ database.ref('items').once('value').then(snap => {
 const json = getDataFromLocalStorage()
 if (json) {
   const storedData = JSON.parse(json)
-  store.dispatch(setUserOwned(storedData.owned))
-  store.dispatch(setUserMastered(storedData.mastered))
-  store.dispatch(setHideOwned(storedData.user.hideOwned))
-  store.dispatch(setHideMastered(storedData.user.hideMastered))
+  if (storedData.mastery) store.dispatch(setUserMastery(storedData.mastery))
+  if (storedData.owned) store.dispatch(setUserOwned(storedData.owned))
+  if (storedData.mastered) store.dispatch(setUserMastered(storedData.mastered))
+  if (storedData.preferences) {
+    store.dispatch(setHideOwned(storedData.preferences.hideOwned))
+    store.dispatch(setHideMastered(storedData.preferences.hideMastered))
+  }
 }
 
 ReactDOM.render(
