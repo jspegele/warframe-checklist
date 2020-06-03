@@ -10,6 +10,14 @@
   word-wrap: break-word;
 }
 
+.item-table__row {
+  transition: background-color .3s;
+}
+
+.item-table__row:hover {
+  background-color: #e4e9ee;
+}
+
 .checkbox--inverted label {
   color: #fff !important;
 }

@@ -27,9 +27,9 @@ class ItemTableItem extends React.Component {
   render() {
     const { excludeCols, item } = this.props
     return (
-      <Table.Row>
+      <Table.Row className="item-table__row">
         {!excludeCols.includes('slot') && <Table.Cell>{item.slot}</Table.Cell>}
-        <Table.Cell>{item.name}</Table.Cell>
+        <Table.Cell><a href={item.link} title="View on Wiki" target="_blank">{item.name}</a></Table.Cell>
         {!excludeCols.includes('type') && <Responsive as={Table.Cell} minWidth={996}>{item.type}</Responsive>}
         <Table.Cell textAlign="right" style={{ paddingRight: 30 }}>{item.mr}</Table.Cell>
         <Table.Cell className="item-table__source">{item.source}</Table.Cell>
