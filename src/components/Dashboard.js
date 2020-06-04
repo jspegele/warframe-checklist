@@ -18,6 +18,7 @@ import UserOverview from './UserOverview'
 import ItemTableFilters from './ItemTableFilters'
 import ItemTable from './ItemTable'
 import TabLoader from './TabLoader'
+import Footer from './Footer'
 
 class Dashboard extends React.Component {
   state = {
@@ -161,6 +162,7 @@ class Dashboard extends React.Component {
           <UserOverview />
           <ItemTableFilters />
           <Tab panes={panes} />
+          <Footer />
         </Container>
       </>
     )
