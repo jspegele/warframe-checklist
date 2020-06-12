@@ -39,9 +39,9 @@ class ItemTableFilters extends React.Component {
   }
   saveUserData = () => {
     saveDataToLocalStorage({
-      mastery: this.props.user.mastery,
       owned: this.props.user.owned,
       mastered: this.props.user.mastered,
+      mastery: this.props.user.mastery,
       preferences: {
         hideOwned: this.state.hideOwned,
         hideMastered: this.state.hideMastered

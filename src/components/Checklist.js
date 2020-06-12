@@ -13,14 +13,12 @@ import {
   setCompanionSort,
   setVehicleSort
 } from '../actions/filters'
-import AppHeader from './AppHeader'
 import UserOverview from './UserOverview'
 import ItemTableFilters from './ItemTableFilters'
 import ItemTable from './ItemTable'
 import TabLoader from './TabLoader'
-import Footer from './Footer'
 
-class Dashboard extends React.Component {
+class Checklist extends React.Component {
   state = {
     weaponSortBy: 'name',
     weaponSort: 'Asc',
@@ -158,11 +156,10 @@ class Dashboard extends React.Component {
     return (
       <>
         <Container style={{ marginTop: 40, marginBottom: 40 }}>
-          <AppHeader />
+          <Segment><Icon name="bookmark outline" /> Be sure to bookmark this page so you can return to your checklist.</Segment>
           <UserOverview />
           <ItemTableFilters />
           <Tab panes={panes} />
-          <Footer />
         </Container>
       </>
     )
@@ -180,4 +177,4 @@ export default connect(mapStateToProps, {
   setWarframeSort,
   setCompanionSort,
   setVehicleSort
-})(Dashboard)
+})(Checklist)

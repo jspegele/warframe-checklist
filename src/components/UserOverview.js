@@ -13,7 +13,7 @@ class UserOverview extends React.Component {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
   }
   render() {
-    const { mastery } = this.props.user
+    const { mastery = 0 } = this.props.user
     const index = this.indexOfCurrentMR(mastery)
     const rank = masteryRanks[index].rank
     const toNextMR = masteryRanks[index+1].mastery - mastery

@@ -64,7 +64,7 @@ class ItemTable extends React.Component {
   }
   handleSubtractMastery = id => {
     const masteryToSubtract = parseInt(this.props.items.find(item => item.id === id).mastery)
-    const mastery = this.state.mastery - masteryToSubtract
+    const mastery = this.state.mastery > masteryToSubtract ? (this.state.mastery - masteryToSubtract) : 0
     this.setState({ mastery }, () => {
       this.props.setUserMastery(mastery)
     })
@@ -75,6 +75,7 @@ class ItemTable extends React.Component {
     saveDataToLocalStorage({
       owned: this.state.owned,
       mastered: this.state.mastered,
+      mastery: this.state.mastery,
       user: {
         hideOwned: this.props.filters.hideOwned,
         hideMastered: this.props.filters.hideMastered

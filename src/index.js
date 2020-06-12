@@ -11,7 +11,7 @@ import configureStore from './store/configureStore'
 import { setItems } from './actions/items'
 import { setHideOwned, setHideMastered } from './actions/filters'
 import { setUserMastery, setUserOwned, setUserMastered } from './actions/user'
-import Dashboard from './components/Dashboard'
+import AppRouter from './routers/AppRouter'
 
 // POPULATE DATABASE
 // const itemsData = require('./data/warframe-master-data.json')
@@ -49,7 +49,7 @@ if (json) {
 
 ReactDOM.render(
   <Provider store={store}>
-    <Dashboard />
+    <AppRouter />
   </Provider>,
   document.getElementById('root')
 );
