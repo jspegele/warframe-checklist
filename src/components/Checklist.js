@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Container, Tab, Segment, Header, Icon } from 'semantic-ui-react'
 
+import database from '../firebase/firebase'
 import {
   selectItems,
   sortItems,
@@ -11,8 +12,15 @@ import {
   setWeaponSort,
   setWarframeSort,
   setCompanionSort,
-  setVehicleSort
+  setVehicleSort,
+  setHideOwned,
+  setHideMastered
 } from '../actions/filters'
+import {
+  setUserOwned,
+  setUserMastered,
+  setUserMastery
+} from '../actions/user'
 import UserOverview from './UserOverview'
 import ItemTableFilters from './ItemTableFilters'
 import ItemTable from './ItemTable'
@@ -20,6 +28,7 @@ import TabLoader from './TabLoader'
 
 class Checklist extends React.Component {
   state = {
+    listId: this.props.match.params.listId,
     weaponSortBy: 'name',
     weaponSort: 'Asc',
     warframeSortBy: 'name',
@@ -28,6 +37,21 @@ class Checklist extends React.Component {
     companionSort: 'Asc',
     vehicleSortBy: 'name',
     vehicleSort: 'Asc'
+  }
+  componentDidMount() {
+    // get user saved info from firebase and send to store
+    database.ref(`checklists/${this.state.listId}`).once('value').then(snap => {
+      const data = snap.val()
+      if (data) {
+        if (data.mastery) this.props.setUserMastery(data.mastery)
+        if (data.owned) this.props.setUserOwned(data.owned)
+        if (data.mastered) this.props.setUserMastered(data.mastered)
+        if (data.preferences) {
+          this.props.setHideOwned(data.preferences.hideOwned)
+          this.props.setHideMastered(data.preferences.hideMastered)
+        }
+      }
+    })
   }
   handleSortChange = (category, column, sort) => {
     if (category === 'Weapons') {
@@ -48,8 +72,16 @@ class Checklist extends React.Component {
       })
     } 
   }
+  handleSaveChecklist = updates => {
+    database.ref(`checklists/${this.state.listId}/`).update(updates).then(() => {
+      this.props.setUserOwned(updates.owned)
+      this.props.setUserMastered(updates.mastered)
+      this.props.setUserMastery(updates.mastery)
+    })
+  }
   render() {
     const { items, visibleItems, filters } = this.props
+    const listId = this.props.match.params.listId
     const weaponSort = filters.weaponSort
     const warframeSort = filters.warframeSort
     const companionSort = filters.companionSort
@@ -65,8 +97,10 @@ class Checklist extends React.Component {
               <ItemTable
                 category={'Weapons'}
                 sortBy={weaponSort}
-                handleSortChange={this.handleSortChange}
                 visibleItems={sortItems(filterItemsByCategory(visibleItems, 'Weapon'), weaponSort)}
+                handleSortChange={this.handleSortChange}
+                handleSaveChecklist={this.handleSaveChecklist}
+                listId={listId}
               />
             ) : (
               <Segment placeholder>
@@ -88,9 +122,11 @@ class Checklist extends React.Component {
               <ItemTable
                 category={'Warframes'}
                 sortBy={warframeSort}
-                handleSortChange={this.handleSortChange}
                 visibleItems={sortItems(filterItemsByCategory(visibleItems, 'Warframe'), warframeSort)}
                 excludeCols={['slot', 'type']}
+                handleSortChange={this.handleSortChange}
+                handleSaveChecklist={this.handleSaveChecklist}
+                listId={listId}
               />
             ) : (
               <Segment placeholder>
@@ -112,8 +148,10 @@ class Checklist extends React.Component {
               <ItemTable
                 category={'Companions'}
                 sortBy={companionSort}
-                handleSortChange={this.handleSortChange}
                 visibleItems={sortItems(filterItemsByCategory(visibleItems, 'Companion'), companionSort)}
+                handleSortChange={this.handleSortChange}
+                handleSaveChecklist={this.handleSaveChecklist}
+                listId={listId}
               />
             ) : (
               <Segment placeholder>
@@ -135,9 +173,11 @@ class Checklist extends React.Component {
               <ItemTable
                 category={'Vehicles'}
                 sortBy={vehicleSort}
-                handleSortChange={this.handleSortChange}
                 visibleItems={sortItems(filterItemsByCategory(visibleItems, 'Vehicle'), vehicleSort)}
                 excludeCols={['type']}
+                handleSortChange={this.handleSortChange}
+                handleSaveChecklist={this.handleSaveChecklist}
+                listId={listId}
               />
             ) : (
               <Segment placeholder>
@@ -156,7 +196,7 @@ class Checklist extends React.Component {
     return (
       <>
         <Container style={{ marginTop: 40, marginBottom: 40 }}>
-          <Segment><Icon name="bookmark outline" /> Be sure to bookmark this page so you can return to your checklist.</Segment>
+          <Segment><Icon name="exclamation" color="red" /> Be sure to bookmark this page so you can return to your checklist.</Segment>
           <UserOverview />
           <ItemTableFilters />
           <Tab panes={panes} />
@@ -176,5 +216,8 @@ export default connect(mapStateToProps, {
   setWeaponSort,
   setWarframeSort,
   setCompanionSort,
-  setVehicleSort
+  setVehicleSort,
+  setUserOwned,
+  setUserMastered,
+  setUserMastery
 })(Checklist)

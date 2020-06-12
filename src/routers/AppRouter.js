@@ -14,7 +14,7 @@ const AppRouter = () => (
     <AppHeader />
     <Switch>
       <Route path="/" component={WelcomePage} exact={true} />
-      <Route path="/:wishlistId" component={Checklist} />
+      <Route path="/:listId" component={Checklist} />
     </Switch>
     <AppFooter />
   </Router>

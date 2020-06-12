@@ -35,17 +35,17 @@ database.ref('items').once('value').then(snap => {
 })
 
 // get user saved info and send to store
-const json = getDataFromLocalStorage()
-if (json) {
-  const storedData = JSON.parse(json)
-  if (storedData.mastery) store.dispatch(setUserMastery(storedData.mastery))
-  if (storedData.owned) store.dispatch(setUserOwned(storedData.owned))
-  if (storedData.mastered) store.dispatch(setUserMastered(storedData.mastered))
-  if (storedData.preferences) {
-    store.dispatch(setHideOwned(storedData.preferences.hideOwned))
-    store.dispatch(setHideMastered(storedData.preferences.hideMastered))
-  }
-}
+// const json = getDataFromLocalStorage()
+// if (json) {
+//   const storedData = JSON.parse(json)
+//   if (storedData.mastery) store.dispatch(setUserMastery(storedData.mastery))
+//   if (storedData.owned) store.dispatch(setUserOwned(storedData.owned))
+//   if (storedData.mastered) store.dispatch(setUserMastered(storedData.mastered))
+//   if (storedData.preferences) {
+//     store.dispatch(setHideOwned(storedData.preferences.hideOwned))
+//     store.dispatch(setHideMastered(storedData.preferences.hideMastered))
+//   }
+// }
 
 ReactDOM.render(
   <Provider store={store}>
