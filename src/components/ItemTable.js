@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Table, Icon, Responsive } from 'semantic-ui-react'
 
-import { saveDataToLocalStorage } from '../localStorage/localStorage'
 import {
   startAddOwned,
   startRemoveOwned,

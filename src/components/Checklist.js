@@ -12,9 +12,7 @@ import {
   setWeaponSort,
   setWarframeSort,
   setCompanionSort,
-  setVehicleSort,
-  setHideOwned,
-  setHideMastered
+  setVehicleSort
 } from '../actions/filters'
 import {
   setUserOwned,

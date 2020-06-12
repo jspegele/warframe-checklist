@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Segment, Grid, List, Label } from 'semantic-ui-react'
+import { Segment, List, Label } from 'semantic-ui-react'
 
 import masteryRanks from '../data/mastery-ranks'
 

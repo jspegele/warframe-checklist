@@ -6,11 +6,8 @@ import './index.css'
 import 'semantic-ui-css/semantic.min.css'
 
 import database from './firebase/firebase'
-import { getDataFromLocalStorage } from './localStorage/localStorage'
 import configureStore from './store/configureStore'
 import { setItems } from './actions/items'
-import { setHideOwned, setHideMastered } from './actions/filters'
-import { setUserMastery, setUserOwned, setUserMastered } from './actions/user'
 import AppRouter from './routers/AppRouter'
 
 // POPULATE DATABASE
