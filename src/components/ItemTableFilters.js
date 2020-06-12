@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Segment, Grid, Input, Dropdown, Checkbox } from 'semantic-ui-react'
 
-import { saveDataToLocalStorage } from '../localStorage/localStorage'
 import {
   setTextFilter,
   setMaxMR,
@@ -28,25 +27,25 @@ class ItemTableFilters extends React.Component {
   handleHideOwnedChange = () => {
     this.setState({ hideOwned: !this.state.hideOwned }, () => {
       this.props.setHideOwned(this.state.hideOwned)
-      this.saveUserData()
+      this.handleSavePreferences()
     })
   }
   handleHideMasteredChange = () => {
     this.setState({ hideMastered: !this.state.hideMastered }, () => {
       this.props.setHideMastered(this.state.hideMastered)
-      this.saveUserData()
+      this.handleSavePreferences()
     })
   }
-  saveUserData = () => {
-    saveDataToLocalStorage({
-      owned: this.props.user.owned,
-      mastered: this.props.user.mastered,
-      mastery: this.props.user.mastery,
-      preferences: {
-        hideOwned: this.state.hideOwned,
-        hideMastered: this.state.hideMastered
-      }
-    })
+  handleSavePreferences = () => {
+    // saveDataToLocalStorage({
+    //   owned: this.props.user.owned,
+    //   mastered: this.props.user.mastered,
+    //   mastery: this.props.user.mastery,
+    //   preferences: {
+    //     hideOwned: this.state.hideOwned,
+    //     hideMastered: this.state.hideMastered
+    //   }
+    // })
   }
   render() {
     const mrOptions = [
