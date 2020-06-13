@@ -12,7 +12,9 @@ import {
   setWeaponSort,
   setWarframeSort,
   setCompanionSort,
-  setVehicleSort
+  setVehicleSort,
+  setHideOwned,
+  setHideMastered
 } from '../actions/filters'
 import {
   setUserOwned,
@@ -196,7 +198,7 @@ class Checklist extends React.Component {
         <Container style={{ marginTop: 40, marginBottom: 40 }}>
           <Segment><Icon name="exclamation" color="red" /> Be sure to bookmark this page so you can return to your checklist.</Segment>
           <UserOverview />
-          <ItemTableFilters />
+          <ItemTableFilters listId={listId} />
           <Tab panes={panes} />
         </Container>
       </>
@@ -215,6 +217,8 @@ export default connect(mapStateToProps, {
   setWarframeSort,
   setCompanionSort,
   setVehicleSort,
+  setHideOwned,
+  setHideMastered,
   setUserOwned,
   setUserMastered,
   setUserMastery

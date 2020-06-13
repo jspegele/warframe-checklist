@@ -27,12 +27,12 @@ const filtersReducer = (state = filtersReducerDefaultState, action) => {
     case actionTypes.SET_HIDE_OWNED:
       return {
         ...state,
-        hideOwned: action.payload.hide
+        hideOwned: action.payload.value
       }
     case actionTypes.SET_HIDE_MASTERED:
       return {
         ...state,
-        hideMastered: action.payload.hide
+        hideMastered: action.payload.value
       }
     case actionTypes.SET_WEAPON_SORT:
       return {

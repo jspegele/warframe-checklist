@@ -6,7 +6,9 @@ import {
   setTextFilter,
   setMaxMR,
   setHideOwned,
-  setHideMastered
+  setHideMastered,
+  startSetHideOwned,
+  startSetHideMastered
 } from '../actions/filters'
 
 class ItemTableFilters extends React.Component {
@@ -26,14 +28,14 @@ class ItemTableFilters extends React.Component {
   }
   handleHideOwnedChange = () => {
     this.setState({ hideOwned: !this.state.hideOwned }, () => {
-      this.props.setHideOwned(this.state.hideOwned)
-      this.handleSavePreferences()
+      this.props.startSetHideOwned(this.props.listId, this.state.hideOwned)
+      // this.handleSavePreferences()
     })
   }
   handleHideMasteredChange = () => {
     this.setState({ hideMastered: !this.state.hideMastered }, () => {
-      this.props.setHideMastered(this.state.hideMastered)
-      this.handleSavePreferences()
+      this.props.startSetHideMastered(this.props.listId, this.state.hideMastered)
+      // this.handleSavePreferences()
     })
   }
   handleSavePreferences = () => {
@@ -116,5 +118,7 @@ export default connect(mapStateToProps, {
   setTextFilter,
   setMaxMR,
   setHideOwned,
-  setHideMastered
+  setHideMastered,
+  startSetHideOwned,
+  startSetHideMastered
 })(ItemTableFilters)

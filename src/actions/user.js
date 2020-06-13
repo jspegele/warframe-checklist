@@ -21,9 +21,9 @@ export const startAddOwned = (listId, owned, itemId) => {
     owned.push(itemId)
     return database.ref(`checklists/${listId}/owned/`).set(owned).then(() => {
       dispatch(addOwned(itemId));
-    });
-  };
-};
+    })
+  }
+}
 
 export const removeOwned = id => ({
   type: actionTypes.REMOVE_OWNED,
