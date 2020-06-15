@@ -29,25 +29,12 @@ class ItemTableFilters extends React.Component {
   handleHideOwnedChange = () => {
     this.setState({ hideOwned: !this.state.hideOwned }, () => {
       this.props.startSetHideOwned(this.props.listId, this.state.hideOwned)
-      // this.handleSavePreferences()
     })
   }
   handleHideMasteredChange = () => {
     this.setState({ hideMastered: !this.state.hideMastered }, () => {
       this.props.startSetHideMastered(this.props.listId, this.state.hideMastered)
-      // this.handleSavePreferences()
     })
-  }
-  handleSavePreferences = () => {
-    // saveDataToLocalStorage({
-    //   owned: this.props.user.owned,
-    //   mastered: this.props.user.mastered,
-    //   mastery: this.props.user.mastery,
-    //   preferences: {
-    //     hideOwned: this.state.hideOwned,
-    //     hideMastered: this.state.hideMastered
-    //   }
-    // })
   }
   render() {
     const mrOptions = [

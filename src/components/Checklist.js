@@ -19,12 +19,14 @@ import {
 import {
   setUserOwned,
   setUserMastered,
-  setUserMastery
+  setStarChartMastery,
+  editIntrinsics
 } from '../actions/user'
 import UserOverview from './UserOverview'
 import ItemTableFilters from './ItemTableFilters'
 import ItemTable from './ItemTable'
 import TabLoader from './TabLoader'
+import OtherMastery from './OtherMastery'
 
 class Checklist extends React.Component {
   state = {
@@ -43,9 +45,10 @@ class Checklist extends React.Component {
     database.ref(`checklists/${this.state.listId}`).once('value').then(snap => {
       const data = snap.val()
       if (data) {
-        if (data.mastery) this.props.setUserMastery(data.mastery)
         if (data.owned) this.props.setUserOwned(data.owned)
         if (data.mastered) this.props.setUserMastered(data.mastered)
+        if (data.starChartMastery) this.props.setStarChartMastery(data.starChartMastery)
+        if (data.intrinsics) this.props.editIntrinsics(data.intrinsics)
         if (data.preferences) {
           this.props.setHideOwned(data.preferences.hideOwned)
           this.props.setHideMastered(data.preferences.hideMastered)
@@ -76,7 +79,6 @@ class Checklist extends React.Component {
     database.ref(`checklists/${this.state.listId}/`).update(updates).then(() => {
       this.props.setUserOwned(updates.owned)
       this.props.setUserMastered(updates.mastered)
-      this.props.setUserMastery(updates.mastery)
     })
   }
   render() {
@@ -190,7 +192,11 @@ class Checklist extends React.Component {
           )}
         </Tab.Pane>
       )},
-      { menuItem: 'Other', render: () => <Tab.Pane style={{ padding: 40 }}>Ability to add Star Chart and Railjack Mastery coming soon.</Tab.Pane> }
+      { menuItem: 'Other', render: () => (
+        <Tab.Pane style={{ padding: 40 }}>
+          <OtherMastery listId={listId} />
+        </Tab.Pane>
+      )}
     ]
 
     return (
@@ -221,5 +227,6 @@ export default connect(mapStateToProps, {
   setHideMastered,
   setUserOwned,
   setUserMastered,
-  setUserMastery
+  setStarChartMastery,
+  editIntrinsics
 })(Checklist)

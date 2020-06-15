@@ -17,7 +17,7 @@ export const addOwned = id => ({
 })
 
 export const startAddOwned = (listId, owned, itemId) => {
-  return (dispatch, getState) => {
+  return dispatch => {
     owned.push(itemId)
     return database.ref(`checklists/${listId}/owned/`).set(owned).then(() => {
       dispatch(addOwned(itemId));
@@ -33,7 +33,7 @@ export const removeOwned = id => ({
 })
 
 export const startRemoveOwned = (listId, owned, itemId) => {
-  return (dispatch, getState) => {
+  return dispatch => {
     owned = owned
       .slice(0, owned.indexOf(itemId))
       .concat(owned.slice(owned.indexOf(itemId) + 1))
@@ -58,7 +58,7 @@ export const setUserMastered = ids => ({
 })
 
 export const startAddMastered = (listId, mastered, itemId) => {
-  return (dispatch, getState) => {
+  return dispatch => {
     mastered.push(itemId)
     return database.ref(`checklists/${listId}/mastered/`).set(mastered).then(() => {
       dispatch(addMastered(itemId))
@@ -74,7 +74,7 @@ export const removeMastered = id => ({
 })
 
 export const startRemoveMastered = (listId, mastered, itemId) => {
-  return (dispatch, getState) => {
+  return dispatch => {
     mastered = mastered
       .slice(0, mastered.indexOf(itemId))
       .concat(mastered.slice(mastered.indexOf(itemId) + 1))
@@ -84,39 +84,34 @@ export const startRemoveMastered = (listId, mastered, itemId) => {
   }
 }
 
-export const setUserMastery = mastery => ({
-  type: actionTypes.SET_USER_MASTERY,
-  payload: {
-    mastery
-  }
-})
-
-export const addMastery = value => ({
-  type: actionTypes.ADD_MASTERY,
+export const setStarChartMastery = value => ({
+  type: actionTypes.SET_STAR_CHART_MASTERY,
   payload: {
     value
   }
 })
 
-export const startAddMastery = (listId, total, value) => {
-  return (dispatch, getState) => {
-    return database.ref(`checklists/${listId}/mastery/`).set(total + value).then(() => {
-      dispatch(addMastery(value))
+export const startSetStarChartMastery = (listId, value) => {
+  return dispatch => {
+    return database.ref(`checklists/${listId}/starChartMastery/`).set(value).then(() => {
+      dispatch(setStarChartMastery(value))
     })
   }
 }
 
-export const subtractMastery = value => ({
-  type: actionTypes.SUBTRACT_MASTERY,
-  payload: {
-    value
-  }
-})
+export const editIntrinsics = updates => {
+  return ({
+    type: actionTypes.EDIT_INTRINSICS,
+    payload: {
+      updates
+    }
+  })
+}
 
-export const startSubtractMastery = (listId, total, value) => {
-  return (dispatch, getState) => {
-    return database.ref(`checklists/${listId}/mastery/`).set(total - value).then(() => {
-      dispatch(subtractMastery(value))
+export const startEditIntrinsics = (listId, updates) => {
+  return dispatch => {
+    return database.ref(`checklists/${listId}/intrinsics/`).update(updates).then(() => {
+      dispatch(editIntrinsics(updates))
     })
   }
 }

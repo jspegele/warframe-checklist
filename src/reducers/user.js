@@ -1,18 +1,19 @@
 import * as actionTypes from '../actions/types'
 
 const defaultUserState = {
-  mastery: 0,
+  starChartMastery: 0,
+  intrinsics: {
+    tactical: 0,
+    piloting: 0,
+    gunnery: 0,
+    engineering: 0
+  },
   owned: [],
   mastered: []
 }
 
 const userReducer = (state = defaultUserState, action) => {
   switch (action.type) {
-    case actionTypes.SET_USER_MASTERY:
-      return {
-        ...state,
-        mastery: action.payload.mastery
-      }
     case actionTypes.SET_USER_OWNED:
       return {
         ...state,
@@ -47,15 +48,18 @@ const userReducer = (state = defaultUserState, action) => {
           .slice(0, state.mastered.indexOf(action.payload.id))
           .concat(state.mastered.slice(state.mastered.indexOf(action.payload.id) + 1))
       }
-    case actionTypes.ADD_MASTERY:
+    case actionTypes.SET_STAR_CHART_MASTERY:
       return {
         ...state,
-        mastery: state.mastery + action.payload.value
+        starChartMastery: action.payload.value
       }
-    case actionTypes.SUBTRACT_MASTERY:
+    case actionTypes.EDIT_INTRINSICS:
       return {
         ...state,
-        mastery: state.mastery - action.payload.value
+        intrinsics: {
+          ...state.intrinsics,
+          ...action.payload.updates
+        }
       }
     default:
       return state

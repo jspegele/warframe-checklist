@@ -6,9 +6,7 @@ import {
   startAddOwned,
   startRemoveOwned,
   startAddMastered,
-  startRemoveMastered,
-  startAddMastery,
-  startSubtractMastery
+  startRemoveMastered
 } from '../actions/user'
 import ItemTableItem from './ItemTableItem'
 
@@ -37,19 +35,9 @@ class ItemTable extends React.Component {
   }
   handleAddMastered = id => {
     this.props.startAddMastered(this.props.listId, [...this.props.user.mastered], id)
-    this.handleAddMastery(id)
   }
   handleRemoveMastered = id => {
     this.props.startRemoveMastered(this.props.listId, [...this.props.user.mastered], id)
-    this.handleSubtractMastery(id)
-  }
-  handleAddMastery = id => {
-    const masteryToAdd = parseInt(this.props.items.find(item => item.id === id).mastery)
-    this.props.startAddMastery(this.props.listId, this.props.user.mastery, masteryToAdd)
-  }  
-  handleSubtractMastery = id => {
-    const masteryToSubtract = parseInt(this.props.items.find(item => item.id === id).mastery)
-    this.props.startSubtractMastery(this.props.listId, this.props.user.mastery, masteryToSubtract)
   }
   
   render() {
@@ -165,7 +153,5 @@ export default connect(mapStateToProps, {
   startAddOwned,
   startRemoveOwned,
   startAddMastered,
-  startRemoveMastered,
-  startAddMastery,
-  startSubtractMastery
+  startRemoveMastered
 })(ItemTable)
