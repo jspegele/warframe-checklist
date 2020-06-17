@@ -27,7 +27,7 @@ const userReducer = (state = defaultUserState, action) => {
     case actionTypes.ADD_OWNED:
       return {
         ...state,
-        owned: [...state.owned, action.payload.id]
+        owned: [...state.owned, ...action.payload.ids]
       }
     case actionTypes.REMOVE_OWNED:
       return {
@@ -39,7 +39,7 @@ const userReducer = (state = defaultUserState, action) => {
     case actionTypes.ADD_MASTERED:
       return {
         ...state,
-        mastered: [...state.mastered, action.payload.id]
+        mastered: [...state.mastered, ...action.payload.ids]
       }
     case actionTypes.REMOVE_MASTERED:
       return {

@@ -5762,6 +5762,18 @@
 	{
 		"category": "Weapon",
 		"slot": "Secondary",
+		"type": "Kitgun",
+		"prime": "FALSE",
+		"vaulted": "",
+		"mr": "0",
+		"mastery": "3000",
+		"name": "Tombfinger",
+		"source": "Syndicate - Solaris United",
+		"link": "https://warframe.fandom.com/wiki/Tombfinger"
+	},
+	{
+		"category": "Weapon",
+		"slot": "Secondary",
 		"type": "Pistol",
 		"prime": "FALSE",
 		"vaulted": "",

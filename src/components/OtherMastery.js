@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Grid, Header, Label, Checkbox, Input, Button } from 'semantic-ui-react'
+import { Grid, Header, Checkbox, Input } from 'semantic-ui-react'
 
 import {
   startSetStarChartMastery,

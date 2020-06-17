@@ -9,18 +9,18 @@ export const setUserOwned = ids => ({
   }
 })
 
-export const addOwned = id => ({
+export const addOwned = ids => ({
   type: actionTypes.ADD_OWNED,
   payload: {
-    id
+    ids
   }
 })
 
-export const startAddOwned = (listId, owned, itemId) => {
+export const startAddOwned = (listId, currentItems, newItems) => {
+  const completeItems = currentItems.concat(newItems)
   return dispatch => {
-    owned.push(itemId)
-    return database.ref(`checklists/${listId}/owned/`).set(owned).then(() => {
-      dispatch(addOwned(itemId));
+    return database.ref(`checklists/${listId}/owned/`).set(completeItems).then(() => {
+      dispatch(addOwned(newItems))
     })
   }
 }
@@ -43,10 +43,10 @@ export const startRemoveOwned = (listId, owned, itemId) => {
   }
 }
 
-export const addMastered = id => ({
+export const addMastered = ids => ({
   type: actionTypes.ADD_MASTERED,
   payload: {
-    id
+    ids
   }
 })
 
@@ -57,11 +57,11 @@ export const setUserMastered = ids => ({
   }
 })
 
-export const startAddMastered = (listId, mastered, itemId) => {
+export const startAddMastered = (listId, currentItems, newItems) => {
+  const completeItems = currentItems.concat(newItems)
   return dispatch => {
-    mastered.push(itemId)
-    return database.ref(`checklists/${listId}/mastered/`).set(mastered).then(() => {
-      dispatch(addMastered(itemId))
+    return database.ref(`checklists/${listId}/mastered/`).set(completeItems).then(() => {
+      dispatch(addMastered(newItems))
     })
   }
 }

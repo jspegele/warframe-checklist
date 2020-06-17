@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Table, Icon, Responsive } from 'semantic-ui-react'
+import { Table, Icon, Responsive, Popup } from 'semantic-ui-react'
 
 import {
   startAddOwned,
@@ -9,12 +9,15 @@ import {
   startRemoveMastered
 } from '../actions/user'
 import ItemTableItem from './ItemTableItem'
+import ConfirmationModal from './ConfirmationModal'
 
 class ItemTable extends React.Component {
   state = {
     mastery: this.props.user.mastery,
     sortBy: 'name',
-    sort: 'Asc'
+    sort: 'Asc',
+    ownedModalOpen: false,
+    masteredModalOpen: false
   }
   onSortChange = (sortBy) => {
     let sort = ''
@@ -28,18 +31,45 @@ class ItemTable extends React.Component {
     })
   }
   handleAddOwned = id => {
-    this.props.startAddOwned(this.props.listId, [...this.props.user.owned], id)
+    this.props.startAddOwned(this.props.listId, [...this.props.user.owned], [id])
   }
   handleRemoveOwned = id => {
     this.props.startRemoveOwned(this.props.listId, [...this.props.user.owned], id)
   }
   handleAddMastered = id => {
-    this.props.startAddMastered(this.props.listId, [...this.props.user.mastered], id)
+    this.props.startAddMastered(this.props.listId, [...this.props.user.mastered], [id])
   }
   handleRemoveMastered = id => {
     this.props.startRemoveMastered(this.props.listId, [...this.props.user.mastered], id)
   }
-  
+  handleOpenOwnedModal = e => {
+    this.setState({ ownedModalOpen: true })
+  }
+  handleCloseOwnedModal = () => {
+    this.setState({ ownedModalOpen: false })
+  }
+  handleAddAllOwned = () => {
+    const { user, visibleItems } = this.props
+    this.handleCloseOwnedModal()
+    
+    // filter items already owned from visible array
+    const itemsToAdd = visibleItems.filter(item => !user.owned.includes(item.id)).map(item => item.id)
+    this.props.startAddOwned(this.props.listId,  [...this.props.user.owned], itemsToAdd)
+  }
+  handleOpenMasteredModal = e => {
+    this.setState({ masteredModalOpen: true })
+  }
+  handleCloseMasteredModal = () => {
+    this.setState({ masteredModalOpen: false })
+  }
+  handleAddAllMastered = () => {
+    const { user, visibleItems } = this.props
+    this.handleCloseMasteredModal()
+    
+    // filter items already owned from visible array
+    const itemsToAdd = visibleItems.filter(item => !user.mastered.includes(item.id)).map(item => item.id)
+    this.props.startAddMastered(this.props.listId,  [...this.props.user.mastered], itemsToAdd)
+  }
   render() {
     const { visibleItems = [], sortBy = 'nameAsc', excludeCols = [], user } = this.props
     return (
@@ -110,8 +140,52 @@ class ItemTable extends React.Component {
                   )
                 )}
             </Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">Owned</Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">Mastered</Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              Owned
+              <Popup
+                content="Mark all visible items as 'owned'"
+                hoverable
+                position="top right"
+                trigger={
+                  <Icon
+                    name="check square outline"
+                    color="blue"
+                    size="large"
+                    style={{ marginLeft: '3px' }}
+                    onClick={this.handleOpenOwnedModal}  
+                  />
+                }
+              />
+              <ConfirmationModal
+                modalOpen={this.state.ownedModalOpen}
+                confirmMsg="Mark all visible items as 'owned'?"
+                action={this.handleAddAllOwned}
+                cancel={this.handleCloseOwnedModal}
+              />
+            </Table.HeaderCell>
+            <Table.HeaderCell textAlign="center">
+              Mastered
+              <Popup
+                content="Mark all visible items as 'mastered'"
+                hoverable
+                position="top right"
+                trigger={
+                  <Icon
+                    name="check square outline"
+                    color="blue"
+                    size="large"
+                    style={{ marginLeft: '3px' }}
+                    onClick={this.handleOpenMasteredModal}  
+                  />
+                }
+                />
+              <ConfirmationModal
+                modalOpen={this.state.masteredModalOpen}
+                confirmMsg="Mark all visible items as 'mastered'?"
+                action={this.handleAddAllMastered}
+                cancel={this.handleCloseMasteredModal}
+              />
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
