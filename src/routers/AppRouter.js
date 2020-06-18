@@ -6,6 +6,7 @@ import AppHeader from '../components/AppHeader'
 import AppFooter from '../components/AppFooter'
 import WelcomePage from '../components/WelcomePage'
 import Checklist from '../components/Checklist'
+import AdminPage from '../components/AdminPage'
 
 export const history = createBrowserHistory();
 
@@ -14,6 +15,7 @@ const AppRouter = () => (
     <AppHeader />
     <Switch>
       <Route path="/" component={WelcomePage} exact={true} />
+      <Route path="/admin" component={AdminPage} />
       <Route path="/:listId" component={Checklist} />
     </Switch>
     <AppFooter />

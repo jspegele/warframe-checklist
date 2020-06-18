@@ -15,16 +15,18 @@ const ConfirmationModal = (props) => (
     overlayClassName="overlay"
   >
     <div className="modal__body">
-      <Header as="h2">Confirmation</Header>
-      {props.confirmMsg && (
-        <p>{props.confirmMsg}</p>
-      )}
+      <Header as="h2">{props.message}</Header>
     </div>
     <div className="modal__actions">
       <Button onClick={props.cancel}>Cancel</Button>
-      <Button primary color="green" onClick={props.action}>Mark All</Button>
+      <Button primary color="green" onClick={props.action}>{props.actionText}</Button>
     </div>
   </Modal>
-);
+)
+
+ConfirmationModal.defaultProps = {
+  message: 'Confirm',
+  actionText: 'Yes'
+}
 
 export default ConfirmationModal;

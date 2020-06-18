@@ -158,8 +158,9 @@ class ItemTable extends React.Component {
               />
               <ConfirmationModal
                 modalOpen={this.state.ownedModalOpen}
-                confirmMsg="Mark all visible items as 'owned'?"
+                message="Mark all visible items as 'owned'?"
                 action={this.handleAddAllOwned}
+                actionText="Mark All"
                 cancel={this.handleCloseOwnedModal}
               />
             </Table.HeaderCell>
@@ -181,8 +182,9 @@ class ItemTable extends React.Component {
                 />
               <ConfirmationModal
                 modalOpen={this.state.masteredModalOpen}
-                confirmMsg="Mark all visible items as 'mastered'?"
+                message="Mark all visible items as 'mastered'?"
                 action={this.handleAddAllMastered}
+                actionText="Mark All"
                 cancel={this.handleCloseMasteredModal}
               />
             </Table.HeaderCell>
