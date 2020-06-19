@@ -5,7 +5,8 @@ import { Provider } from 'react-redux'
 import './index.css'
 import 'semantic-ui-css/semantic.min.css'
 
-import database from './firebase/firebase'
+import database, { firebase } from './firebase/firebase'
+import { login, logout } from './actions/auth';
 import configureStore from './store/configureStore'
 import { setItems } from './actions/items'
 import AppRouter from './routers/AppRouter'
@@ -36,4 +37,12 @@ ReactDOM.render(
     <AppRouter />
   </Provider>,
   document.getElementById('root')
-);
+)
+
+firebase.auth().onAuthStateChanged((user) => {
+  if(user) {
+    store.dispatch(login(user.uid))
+  } else {
+    store.dispatch(logout())
+  }
+})

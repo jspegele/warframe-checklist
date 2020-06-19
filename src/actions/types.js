@@ -20,3 +20,7 @@ export const REMOVE_OWNED = 'REMOVE_OWNED'
 export const REMOVE_MASTERED = 'REMOVE_MASTERED'
 export const SET_STAR_CHART_MASTERY = 'SET_STAR_CHART_MASTERY'
 export const EDIT_INTRINSICS = 'EDIT_INTRINSICS'
+
+// Auth types
+export const LOGIN = 'LOGIN'
+export const LOGOUT = 'LOGOUT'

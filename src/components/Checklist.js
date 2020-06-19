@@ -193,7 +193,7 @@ class Checklist extends React.Component {
         </Tab.Pane>
       )},
       { menuItem: 'Other', render: () => (
-        <Tab.Pane style={{ padding: 40 }}>
+        <Tab.Pane>
           <OtherMastery listId={listId} />
         </Tab.Pane>
       )}

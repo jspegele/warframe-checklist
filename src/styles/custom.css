@@ -22,6 +22,10 @@
   color: #fff !important;
 }
 
+/* Tabs */
+.tab {
+  padding: 30px 20px !important;
+}
 
 /* React Modal */
 .ReactModalPortal > div {
@@ -42,6 +46,7 @@
 .ReactModalPortal .ReactModal__Overlay--before-close {
   opacity: 0;
 }
+
 
 /* Custom Modal */
 .overlay {

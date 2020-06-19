@@ -16,12 +16,11 @@ class WelcomePage extends React.Component {
       checklists: [...this.state.checklists, id]
     }, () => {
       localStorage.setItem('checklists', JSON.stringify(this.state.checklists))
-      history.push(`/${id}`)
+      history.push(`/list/${id}`)
     })
   }
   render() {
     const { loading, checklists } = this.state
-    console.log('test', checklists)
     return (
       <Container style={{ marginTop: 40, marginBottom: 40 }}>
         {loading ? (
@@ -35,7 +34,7 @@ class WelcomePage extends React.Component {
               <Segment>
                 <p style={{ fontWeight: 'bold' }}>We found the following checklists created by you:</p>
                 {checklists.map((checklist, i) => (
-                  <p key={i}><a href={window.location.href + checklist}>{window.location.href + checklist}</a></p>
+                  <p key={i}><a href={window.location.href + 'list/' + checklist}>{window.location.href + 'list/' + checklist}</a></p>
                 ))}
                 <p style={{ fontStyle: 'italic' }}>
                   Please bookmark your checklists. We will not be able to find your checklists if you 
