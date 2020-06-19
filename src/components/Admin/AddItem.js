@@ -1,7 +1,8 @@
 import React from 'react'
-import { Message } from 'semantic-ui-react'
+import { Header, Message } from 'semantic-ui-react'
 
 import database from '../../firebase/firebase'
+
 import ItemForm from './ItemForm'
 
 class AddItem extends React.Component {
@@ -23,6 +24,7 @@ class AddItem extends React.Component {
   render() {
     return (
       <>
+        <Header as="h2">Add New Item</Header>
         {this.state.error && (
           <Message
             error

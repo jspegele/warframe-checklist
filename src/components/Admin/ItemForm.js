@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Header, Form, Label, Button, Input, Dropdown, Message } from 'semantic-ui-react'
+import { Grid, Form, Label, Button, Input, Dropdown, Message } from 'semantic-ui-react'
 
 import {
   categoryValues,
@@ -10,6 +10,7 @@ import {
   masteryValues,
   sourceValues
 } from './admin-form-data'
+
 import ConfirmationModal from '../ConfirmationModal'
 
 class ItemForm extends React.Component {
@@ -51,17 +52,19 @@ class ItemForm extends React.Component {
       commonSource,
       customSource
     } = this.state
-    if (!name || !category || !link || !mr || !mastery) {
-      this.setState({ error: "Complete all required fields" })
-      return false
-    } if (category === 'Weapon' && (!slot || !type)) {
-      this.setState({ error: "Slot and Type are required fields for Weapons" })
-      return false
-    } if (category === 'Companion' && (!slot)) {
-      this.setState({ error: "Slot is required for Companions" })
-      return false
-    } if (!commonSource && !customSource) {
-      this.setState({ error: "Select a common source or enter a custom source" })
+    
+    const missingFields = []
+    if (!name) missingFields.push('Name')
+    if (!category) missingFields.push('Category')
+    if (!link) missingFields.push('Link')
+    if (!mr && mr !== 0) missingFields.push('MR')
+    if (!mastery) missingFields.push('Mastery')
+    if ((category === 'Weapon' || category === 'Companion') && !slot) missingFields.push('Slot')
+    if (category === 'Weapon' && !type) missingFields.push('Type')
+    if (!commonSource && !customSource) missingFields.push('Source')
+
+    if (missingFields.length > 0) {
+      this.setState({ error: "Complete the following fields: " + missingFields.join(', ') })
       return false
     } else {
       return true
@@ -70,7 +73,7 @@ class ItemForm extends React.Component {
   onSubmit = e => {
     e.preventDefault()
 
-    const newItem = 	{
+    const updates = 	{
       "category": this.state.category,
       "slot": this.state.slot,
       "type": this.state.type,
@@ -84,7 +87,7 @@ class ItemForm extends React.Component {
     }
 
     if (this.isFormValid()) {
-      this.props.onSubmit(newItem)
+      this.props.onSubmit(updates)
       this.handleClearForm()
     }
   }
@@ -96,7 +99,6 @@ class ItemForm extends React.Component {
 
     return (
       <>
-        <Header as="h3">Add a new item to Firebase</Header>
         {error && (
           <Message
             error
@@ -104,7 +106,7 @@ class ItemForm extends React.Component {
           />
         )}
         <Form onSubmit={this.onSubmit}>
-          <Grid>
+          <Grid stackable>
             <Grid.Row>
               <Grid.Column width="10">
                 <Form.Field
@@ -192,11 +194,12 @@ class ItemForm extends React.Component {
                   value={link}
                   onChange={this.handleLink}
                 />
-                {(this.state.link !== 'https://warframe.fandom.com/wiki/' && this.state.link !== '') && (
-                  <div style={{ marginTop: "-8px", marginLeft: "2px" }}>
-                    Validate Link: <a href={this.state.link} target="_blank" rel="noopener noreferrer">{this.state.link}</a>
-                  </div>
-                )}
+                <div style={{ marginTop: "-8px", marginLeft: "2px" }}>
+                    Validate Link:{' '}
+                    {(this.state.link !== 'https://warframe.fandom.com/wiki/' && this.state.link !== '') && (
+                      <a href={this.state.link} target="_blank" rel="noopener noreferrer">{this.state.link}</a>
+                    )}
+                </div>
               </Grid.Column>
               <Grid.Column width="3">
                 <Form.Field
@@ -255,7 +258,7 @@ class ItemForm extends React.Component {
             <Grid.Row>
               <Grid.Column>
                 <Form.Group>
-                  <Form.Button primary>Submit</Form.Button>
+                  <Form.Button primary>Save</Form.Button>
                   <Button negative basic type="button" onClick={this.handleClearFormModalOpen}>Clear</Button>
                   <ConfirmationModal
                     modalOpen={clearFormModal}
@@ -280,8 +283,8 @@ ItemForm.defaultProps = {
     category: '',
     slot: '',
     type: '',
-    prime: false,
-    vaulted: false,
+    prime: 'FALSE',
+    vaulted: 'FALSE',
     link: 'https://warframe.fandom.com/wiki/',
     mr: 0,
     mastery: 3000,

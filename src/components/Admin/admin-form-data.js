@@ -89,9 +89,9 @@ export const mrValues = [
 ]
 
 export const masteryValues = [
-  {key: 3000, text: '3000', value: 3000},
-  {key: 4000, text: '4000', value: 4000},
-  {key: 6000, text: '6000', value: 6000}
+  {key: '3000', text: '3000', value: 3000},
+  {key: '4000', text: '4000', value: 4000},
+  {key: '6000', text: '6000', value: 6000}
 ]
 
 export const sourceValues = [
