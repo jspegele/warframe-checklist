@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Segment, Grid, Input, Dropdown, Checkbox } from 'semantic-ui-react'
+import { Segment, Grid, Input, Dropdown, Checkbox, Icon } from 'semantic-ui-react'
 
 import {
   setTextFilter,
@@ -54,6 +54,12 @@ class ItemTableFilters extends React.Component {
       { key: 14, value: 14, text: 'MR 14'},
       { key: 15, value: 15, text: 'MR 15'}
     ]
+    const filterIcon = this.state.text.length === 0 ? (null) : (
+      <Icon name='delete' color="grey" link onClick={() => {
+        this.setState({ text: '' })
+        this.props.setTextFilter('')
+      }} />
+    )
     return (
       <Segment>
         <Grid stackable>
@@ -65,6 +71,7 @@ class ItemTableFilters extends React.Component {
               name="text"
               value={this.state.text}
               onChange={this.handleTextChange}
+              icon={filterIcon}
             />
           </Grid.Column>
           <Grid.Column width="3">

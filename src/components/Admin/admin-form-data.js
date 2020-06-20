@@ -23,6 +23,7 @@ export const slotValues = [
 ]
 
 export const typeValues = [
+  {key: 'amp', text: 'Amp', value: 'Amp'},
   {key: 'arm-cannon', text: 'Arm-Cannon', value: 'Arm-Cannon'},
   {key: 'blade-and-whip', text: 'Blade and Whip', value: 'Blade and Whip'},
   {key: 'bow', text: 'Bow', value: 'Bow'},

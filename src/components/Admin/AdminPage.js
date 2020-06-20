@@ -7,7 +7,6 @@ import database from '../../firebase/firebase'
 import { sourceValues } from './admin-form-data'
 
 import Overview from './Overview'
-import AddItem from './AddItem'
 import ItemList from './ItemList'
 
 class AdminPage extends React.Component {
@@ -38,14 +37,42 @@ class AdminPage extends React.Component {
         items.push(formattedItem)
       })
       this.setState({ items }, () => {
-        this.addItemListener()
+        this.addItemListeners()
       })
     })
   }
   componentWillUnmount = () => {
-    this.removeItemListener()
+    this.removeItemListeners()
   }
-  addItemListener = () => {
+  addItemListeners = () => {
+    // Item Added
+    const loadedItems = this.state.items.map(item => item.id)
+    this.state.itemsRef
+      .on('child_added', snap => {
+        if (!loadedItems.includes(snap.key)) {
+          const items = [...this.state.items]
+          const item = snap.val()
+          const formattedItem = {
+            id: snap.key,
+            category: item.category,
+            link: item.link,
+            mastery: parseInt(item.mastery),
+            mr: parseInt(item.mr),
+            name: item.name,
+            prime: (item.prime === 'TRUE'),
+            slot: item.slot,
+            source: item.source,
+            commonSource: sourceValues.map(source => source.value).includes(item.source) ? item.source : '',
+            customSource: !sourceValues.map(source => source.value).includes(item.source) ? item.source : '',
+            type: item.type,
+            vaulted: (item.vaulted === 'TRUE')
+          }
+          items.push(formattedItem)
+          this.setState({ items })
+        }
+      })
+
+    // Item Changed
     this.state.itemsRef
       .on('child_changed', snap => {
         const items = [...this.state.items]
@@ -62,7 +89,7 @@ class AdminPage extends React.Component {
         this.setState({ items })
       })
   }
-  removeItemListener = () => {
+  removeItemListeners = () => {
     this.state.itemsRef.off()
   }
   render() {
@@ -72,7 +99,6 @@ class AdminPage extends React.Component {
       {this.props.isAuthenticated ? (
         <Container style={{ marginTop: 40, marginBottom: 40 }}>
           <Segment><Overview items={items} /></Segment>
-          <Segment><AddItem /></Segment>
           <Segment><ItemList items={items} /></Segment>
         </Container>
       ) : (

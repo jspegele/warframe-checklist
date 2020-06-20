@@ -73,7 +73,7 @@ class ItemTable extends React.Component {
   render() {
     const { visibleItems = [], sortBy = 'nameAsc', excludeCols = [], user } = this.props
     return (
-      <Table singleLine>
+      <Table>
         <Table.Header>
           <Table.Row>
             {!excludeCols.includes('slot') && (

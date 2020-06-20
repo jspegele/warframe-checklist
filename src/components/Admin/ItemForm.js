@@ -11,12 +11,9 @@ import {
   sourceValues
 } from './admin-form-data'
 
-import ConfirmationModal from '../ConfirmationModal'
-
 class ItemForm extends React.Component {
   state = {
-    ...this.props.item,
-    clearFormModal: false
+    ...this.props.item
   }
   handleName = e => this.setState({
     name: e.target.value,
@@ -32,14 +29,6 @@ class ItemForm extends React.Component {
   handleMastery = (e, { value }) => this.setState({ mastery: value })
   handleCommonSource = (e, { value }) => this.setState({ commonSource: value })
   handleCustomSource = e => this.setState({ customSource: e.target.value })
-  handleClearFormModalOpen = () => this.setState({ clearFormModal: true })
-  handleClearFormModalClose = () => this.setState({ clearFormModal: false })
-  handleClearForm = () => {
-    this.setState({
-      ...this.props.item,
-      clearFormModal: false
-    })
-  }
   isFormValid = () => {
     const {
       name,
@@ -88,13 +77,12 @@ class ItemForm extends React.Component {
 
     if (this.isFormValid()) {
       this.props.onSubmit(updates)
-      this.handleClearForm()
     }
   }
   render() {
     const {
-      name, category, slot, type, prime, vaulted, link, mr,
-      mastery, commonSource, customSource, clearFormModal, error
+      name, category, slot, type, prime, vaulted, link, 
+      mr, mastery, commonSource, customSource, error
     } = this.state
 
     return (
@@ -135,6 +123,7 @@ class ItemForm extends React.Component {
               <Grid.Column width="6">
                 <Form.Field
                   control={Dropdown}
+                  clearable
                   required={category === 'Weapon'}
                   label='Slot'
                   placeholder='Choose...'
@@ -148,6 +137,7 @@ class ItemForm extends React.Component {
               <Grid.Column width="6">
                 <Form.Field
                   control={Dropdown}
+                  clearable
                   required={category === 'Weapon'}
                   label='Type'
                   placeholder='Choose...'
@@ -255,18 +245,15 @@ class ItemForm extends React.Component {
                 />
               </Grid.Column>
             </Grid.Row>
-            <Grid.Row>
+            <Grid.Row style={{ marginTop: '20px' }}>
               <Grid.Column>
                 <Form.Group>
                   <Form.Button primary>Save</Form.Button>
-                  <Button negative basic type="button" onClick={this.handleClearFormModalOpen}>Clear</Button>
-                  <ConfirmationModal
-                    modalOpen={clearFormModal}
-                    message="Clear Form?"
-                    action={this.handleClearForm}
-                    actionText="Clear"
-                    cancel={this.handleClearFormModalClose}
-                  />
+                  <Button
+                    basic
+                    type="button"
+                    onClick={this.props.onCancel}
+                    style={{ marginLeft: '12px'}}>Cancel</Button>
                 </Form.Group>
               </Grid.Column>
             </Grid.Row>
@@ -283,8 +270,8 @@ ItemForm.defaultProps = {
     category: '',
     slot: '',
     type: '',
-    prime: 'FALSE',
-    vaulted: 'FALSE',
+    prime: false,
+    vaulted: false,
     link: 'https://warframe.fandom.com/wiki/',
     mr: 0,
     mastery: 3000,
